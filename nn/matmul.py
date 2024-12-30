@@ -24,6 +24,7 @@ b = ttnn.to_device(b, device, memory_config=ttnn.L1_MEMORY_CONFIG)
 a = ttnn.to_layout(a, ttnn.TILE_LAYOUT)
 b = ttnn.to_layout(b, ttnn.TILE_LAYOUT)
 
+# necessary to restate this?
 output = ttnn.matmul(a, b, memory_config=ttnn.L1_MEMORY_CONFIG, core_grid=ttnn.CoreGrid(y=8, x=8))
 
 ttnn.close_device(device)
