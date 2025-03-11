@@ -1,4 +1,4 @@
-#include "debug/dprint.h"  // required in all kernels using DPRINT
+#include <debug/dprint.h>  // required in all kernels using DPRINT
 
 
 void kernel_main() {

@@ -1,7 +1,7 @@
-#include <tt_metal/host_api.hpp>
+#include <tt-metalium/host_api.hpp>
 
 int main() {
-    Device* device = CreateDevice(0);
+    IDevice* device = CreateDevice(0);
     CommandQueue& cq = device->command_queue();
 
     constexpr uint32_t N = 1024;
@@ -49,7 +49,7 @@ int main() {
     // build kernel
     Program program = CreateProgram();
     CoreRange core({0, 0}, {0, 0});
-    KernelHandle kernel_id = CreateKernel(program, "./kernel.cpp", core, DataMovementConfig{.processor = DataMovementProcessor::RISCV_0, .noc = NOC::RISCV_0_default});
+    KernelHandle kernel_id = CreateKernel(program, "./add_kernel.cpp", core, DataMovementConfig{.processor = DataMovementProcessor::RISCV_0, .noc = NOC::RISCV_0_default});
 
     const std::vector<uint32_t> runtime_args {
         l1_buffer->address(),
@@ -68,6 +68,8 @@ int main() {
     std::vector<uint32_t> result_vec;
     EnqueueReadBuffer(cq, dst_dram_buffer, result_vec, true);
     printf("result: %d\n", result_vec[0]);
+
+    tt::tt_metal::v0::DumpDeviceProfileResults(device, program); 
 
     assert(CloseDevice(device));
 }
